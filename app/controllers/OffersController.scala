@@ -11,12 +11,13 @@ import play.api.data._
 import play.api.libs.json.{JsError, JsSuccess, Json}
 import play.api.libs.ws._
 import play.api.mvc._
+import play.api.Configuration
 
 import scala.concurrent.{ExecutionContext, Future}
 
 @Singleton
 class OffersController @Inject()(cc: MessagesControllerComponents, actorSystem: ActorSystem,
-                                 ws: WSClient)(implicit exec: ExecutionContext) extends MessagesAbstractController(cc) {
+                                 ws: WSClient, config: Configuration)(implicit exec: ExecutionContext) extends MessagesAbstractController(cc) {
 
   val getOffersForm = Form(
     mapping("uid" -> text,
@@ -39,13 +40,17 @@ class OffersController @Inject()(cc: MessagesControllerComponents, actorSystem: 
     Ok(views.html.offers.getOffers(getOffersForm.fill(GetOffersRequest("foo", "deal-finder", "foo", ""))))
   }
 
+  def test = Action {
+    Ok("success")
+  }
+
   def getOffers = Action.async { implicit request =>
     getOffersForm.bindFromRequest().fold(
       errorForm => {
         Future.successful(BadRequest(views.html.offers.getOffers(errorForm)))
       },
       requestForm => {
-        val request: WSRequest = ws.url("https://offersvc.expedia.com/offers/v2/getOffers?scenario=deal-finder&page=foo&uid=foo&productType=Hotel")
+        val request: WSRequest = ws.url(config.get[String]("app.service.offers.url") + "?scenario=deal-finder&page=foo&uid=foo&productType=Hotel")
         request.get().map(reponse => Json.fromJson[OffersModelV2](Json.parse(reponse.body)) match {
           case JsSuccess(offer, path) =>
             Logger.info(offer.toString())
