@@ -1,0 +1,18 @@
+@(requestForm: Form[GetOffersRequest])(implicit request: RequestHeader, messagesProvider: MessagesProvider))
+
+@import helper._
+
+@main("Welcome to Play") {
+
+    @form(action = routes.OffersController.getOffers()) {
+        @inputText(requestForm("uid"), 'placeholder -> requestForm.value.map(xx => xx.uid).getOrElse("BAQBAQ"))
+        @inputText(requestForm("scenario"))
+        @inputText(requestForm("page"))
+        @inputText(requestForm("productType"))
+        @CSRF.formField
+
+        <div class="buttons">
+            <input type="submit" value="Show Offers"/>
+        </div>
+    }
+}
