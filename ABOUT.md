@@ -22,6 +22,7 @@ This project was built on top of Lightbend's starter application <https://github
 
 Run this using [sbt](http://www.scala-sbt.org/).  It was developed and tested using sbt 0.13.16:
 
+Application is already deployed to heroku, <https://sheltered-hamlet-53166.herokuapp.com/>.
 ```bash
 sbt run
 ```
