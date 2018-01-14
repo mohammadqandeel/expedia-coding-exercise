@@ -1,6 +1,6 @@
 # Expedia Coding Exercise 
 
-[<img src="https://img.shields.io/travis/playframework/play-scala-starter-example.svg"/>](https://travis-ci.org/playframework/play-scala-starter-example)
+[<img src="https://img.shields.io/travis/mohammadqandeel/expedia-coding-exercise.svg"/>](https://travis-ci.org/mohammadqandeel/expedia-coding-exercise)
 
 This is a quick solution for the Expedia Coding Exercise v1 <https://gist.github.com/Jun-Dai/6101aadf80e47e6c46a3>
 
