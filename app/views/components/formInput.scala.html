@@ -1,0 +1,18 @@
+@(field: Field, prepend: Option[String], append: Option[String])(implicit messagesProvider: MessagesProvider)
+
+@helper.input(field) { (id, name, value, args) =>
+    <div class="input-group mb-3">
+        @prepend.map { text =>
+            <div class="input-group-prepend">
+                <span class="input-group-text">@text</span>
+            </div>
+        }
+    <input type="text" name="@name" id="@id" class="form-control" @toHtmlArgs(args)>
+        @append.map { text =>
+            <div class="input-group-append">
+                <span class="input-group-text">@text</span>
+            </div>
+        }
+    </div>
+
+}

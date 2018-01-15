@@ -1,27 +1,58 @@
-@(offer: OffersModelV2)
+@(offer: OffersModelV2, requestForm: Form[GetOffersRequest])(implicit request: RequestHeader, messagesProvider: MessagesProvider)
+
+@import helper._
 
 @main("Welcome to Play") {
-    @offer.offers.Hotel.sliding(3, 3).map { hotelOffers =>
-        <div class="card-deck">
-            @hotelOffers.map { hotelOffer =>
-                <div class="card">
-                    <img class="card-img-top" src="@hotelOffer.hotelInfo.hotelImageUrl" alt="Card image cap">
-                    <div class="card-block">
-                        <h4 class="card-title">@hotelOffer.hotelInfo.hotelName</h4>
-                        <p class="card-text">@hotelOffer.destination.longName</p>
-                    </div>
-                    <div class="card-footer">
-                        @components.checkbox("VIP Access", hotelOffer.hotelInfo.vipAccess) <br/>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+            @form(action = routes.OffersController.getOffers()) {
 
-                        @components.hotelUrgencyInfo(hotelOffer.hotelUrgencyInfo) <br/>
+                <input type="hidden" name="uid" value="@requestForm.get.uid">
+                <input type="hidden" name="scenario" value="@requestForm.get.scenario">
+                <input type="hidden" name="page" value="@requestForm.get.page">
+                <input type="hidden" name="productType" value="@requestForm.get.productType">
 
-                        <button type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="right" data-content="Vivamus sagittis lacus vel augue laoreet rutrum faucibus.">
-                            Popover on right
-                        </button>
-                        @*<small class="text-muted">Last updated 3 mins ago</small>*@
-                    </div>
+                @components.formInput(requestForm("destinationName"), None, None)
+                @components.formInput(requestForm("minTripStartDate"), None, None)
+                @components.formInput(requestForm("maxTripStartDate"), None, None)
+                @components.formInput(requestForm("lengthOfStay"), None, Some("00"))
+                @components.formInput(requestForm("minStarRating"), None, Some(".00"))
+                @components.formInput(requestForm("maxStarRating"), None, Some(".00"))
+                @components.formInput(requestForm("minTotalRate"), None, Some(".00"))
+                @components.formInput(requestForm("maxTotalRate"), None, Some(".00"))
+                @components.formInput(requestForm("minGuestRating"), None, Some(".00"))
+                @components.formInput(requestForm("maxGuestRating"), None, Some(".00"))
+                @CSRF.formField
+
+                <div class="buttons">
+                    <input type="submit" value="Update Offers" class="btn btn-primary"/>
                 </div>
             }
+            </div>
+            <div class="col-sm-7">
+            @offer.offers.Hotel.sliding(3, 3).map { hotelOffers =>
+                <div class="card-deck">
+                    @hotelOffers.map { hotelOffer =>
+                        <div class="col-sm-4">
+                            <div class="card">
+                                <img class="card-img-top" src="@hotelOffer.hotelInfo.hotelImageUrl" alt="Card image cap">
+                                <div class="card-block">
+                                    <h4 class="card-title">@hotelOffer.hotelInfo.hotelName</h4>
+                                    <p class="card-text">@hotelOffer.destination.longName</p>
+                                </div>
+                                <div class="card-footer">
+                                    @components.checkbox("VIP Access", hotelOffer.hotelInfo.vipAccess) <br/>
+
+                                    @components.hotelUrgencyInfo(hotelOffer.hotelUrgencyInfo) <br/>
+                                    @*<small class="text-muted">Last updated 3 mins ago</small>*@
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+            </div>
         </div>
-    }
+    </div>
 }

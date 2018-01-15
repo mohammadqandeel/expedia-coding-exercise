@@ -2,3 +2,17 @@ uid = User ID
 scenraio = Scenario
 page = Page
 productType = What are you looking for?
+destinationName = Destination
+minTripStartDate = Trip start date
+maxTripStartDate = Trip end date
+lengthOfStay = Length of stay 
+minStarRating = Minimum Stars
+maxStarRating = Maximum Starts
+minTotalRate = Minimum total rate
+maxTotalRate = Maximum total rate
+minGuestRating = Minimum guests rate
+maxGuestRating = Maximum guests rate
+
+
+format.numeric=
+format.real=

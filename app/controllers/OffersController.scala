@@ -50,13 +50,13 @@ class OffersController @Inject()(cc: MessagesControllerComponents, actorSystem: 
         Future.successful(BadRequest(views.html.offers.getOffers(errorForm)))
       },
       requestForm => {
-        val request: WSRequest = ws.url(config.get[String]("app.service.offers.url") + "?scenario=deal-finder&page=foo&uid=foo&productType=Hotel")
-        request.get().map(reponse => Json.fromJson[OffersModelV2](Json.parse(reponse.body)) match {
-          case JsSuccess(offer, path) =>
-            Logger.info(offer.toString())
-            Ok(views.html.offers.offersList(offer))
-          case e: JsError => Ok(e.errors.map(error => error._1.toString + " " + error._2.toString).mkString("|")) // JsError.toJson(e)
-        })
+        ws.url(config.get[String]("app.service.offers.url") + "?scenario=deal-finder&page=foo&uid=foo&productType=Hotel").get().map(reponse =>
+          Json.fromJson[OffersModelV2](Json.parse(reponse.body)) match {
+            case JsSuccess(offer, path) =>
+              Logger.info(offer.toString())
+              Ok(views.html.offers.offersList(offer, getOffersForm.fill(requestForm)))
+            case e: JsError => Ok(e.errors.map(error => error._1.toString + " " + error._2.toString).mkString("|")) // JsError.toJson(e)
+          })
       }
     )
   }
