@@ -5,4 +5,6 @@ Expedia Coding Exercise v1 solution: https://gist.github.com/Jun-Dai/6101aadf80e
 
 Check ABOUT.md for more details.
 
-Pending: Add the extra query params to API request.
+Pending: 
+  - Add the extra query params to API request.
+  - Show more offer info in Offers List view.
