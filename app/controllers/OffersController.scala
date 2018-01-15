@@ -50,7 +50,7 @@ class OffersController @Inject()(cc: MessagesControllerComponents, actorSystem: 
         Future.successful(BadRequest(views.html.offers.getOffers(errorForm)))
       },
       requestForm => {
-        ws.url(config.get[String]("app.service.offers.url") + "?scenario=deal-finder&page=foo&uid=foo&productType=Hotel").get().map(reponse =>
+        ws.url(config.get[String]("app.service.offers.url") + buildQueryParams(requestForm)).get().map(reponse =>
           Json.fromJson[OffersModelV2](Json.parse(reponse.body)) match {
             case JsSuccess(offer, path) =>
               Logger.info(offer.toString())
@@ -59,5 +59,25 @@ class OffersController @Inject()(cc: MessagesControllerComponents, actorSystem: 
           })
       }
     )
+  }
+
+  private def buildQueryParams(requestForm: GetOffersRequest) = {
+    val queryParams: StringBuilder = new StringBuilder()
+    queryParams.append(s"?scenario=${requestForm.scenario}")
+    queryParams.append(s"&page=${requestForm.page}")
+    queryParams.append(s"&uid=${requestForm.uid}")
+    queryParams.append(s"&productType=${requestForm.productType}")
+    //    if (requestForm.destinationName.isDefined) queryParams.append(s"&destinationName=${requestForm.destinationName.get}")
+    //    if (requestForm.minTripStartDate.isDefined) queryParams.append(s"&minTripStartDate=${requestForm.minTripStartDate.get}")
+    //    if (requestForm.maxTripStartDate.isDefined) queryParams.append(s"&maxTripStartDate=${requestForm.maxTripStartDate.get}")
+    //    if (requestForm.lengthOfStay.isDefined) queryParams.append(s"&lengthOfStay=${requestForm.lengthOfStay.get}")
+    //    if (requestForm.minStarRating.isDefined) queryParams.append(s"&minStarRating=${requestForm.minStarRating.get}")
+    //    if (requestForm.maxStarRating.isDefined) queryParams.append(s"&maxStarRating=${requestForm.maxStarRating.get}")
+    //    if (requestForm.minTotalRate.isDefined) queryParams.append(s"&minTotalRate=${requestForm.minTotalRate.get}")
+    //    if (requestForm.maxTotalRate.isDefined) queryParams.append(s"&maxTotalRate=${requestForm.maxTotalRate.get}")
+    //    if (requestForm.minGuestRating.isDefined) queryParams.append(s"&minGuestRating=${requestForm.minGuestRating.get}")
+    //    if (requestForm.maxGuestRating.isDefined) queryParams.append(s"&maxGuestRating=${requestForm.maxGuestRating.get}")
+
+    queryParams.result()
   }
 }

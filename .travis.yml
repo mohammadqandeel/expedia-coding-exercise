@@ -12,7 +12,7 @@ env:
     - SCRIPT=scripts/test-sbt
     - SCRIPT=scripts/test-gradle
 script:
-- $SCRIPT
+- sbt test
 cache:
   directories:
   - "$HOME/.ivy2/cache"
